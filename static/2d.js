@@ -3,11 +3,10 @@ var myMap;
 
 function init() {
     myMap = new ymaps.Map("map", {
-        center: [57.5262, 38.3061],
-        zoom: 13
+        center: [35.6897, 139.6922],
+        zoom: 1
     }, {
         balloonMaxWidth: 200,
-        searchControlProvider: 'yandex#search',
         suppressMapOpenBlock: true
     });
     myMap.controls.remove('searchControl');
@@ -23,7 +22,6 @@ function init() {
     myMap.behaviors.enable('scrollZoom');
     // Обработка события, возникающего при щелчке
     // левой кнопкой мыши в любой точке карты.
-    // При возникновении такого события откроем балун.
     myMap.events.add('click', function (e) {
         var coords = e.get('coords');
         myMap.geoObjects.removeAll();
