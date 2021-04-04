@@ -72,7 +72,7 @@ function setCorrectLocation() {
     myMap.geoObjects.add(new ymaps.Placemark( [latitude,longitude], {iconContent: "Вы здесь"}, {preset: 'islands#blackStretchyIcon'}))
     modal(`Вы ошиблись на ${Math.round(d)} км.\n
      Получено ${r} очков`);
-     geoObjects.balloon.open(myMap.getCenter());
+     myGeoObject.balloon.open(myMap.getCenter());
 }
 
 function initialize() {
