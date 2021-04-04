@@ -1,26 +1,26 @@
-from flask import Flask, render_template, request
-from flask_wtf import FlaskForm
-from werkzeug.utils import redirect
-from wtforms import SubmitField
 from random import choice
-import os
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'сыр'
 
 
 def get_rnd():
-    from random import choice
-    data = choice(open('worldcities.csv', encoding='utf-8').readlines())
-    print(data)
-    # data = '"Moscow","Moscow","55.7558","37.6178","Russia","RU","RUS","Moskva","primary","17125000","1643318494"'
-    return data.replace('"', '').split(',')[2:4]
+    # data = choice(open('worldcities.csv', encoding='utf-8').readlines())
+    data = '"Moscow","Moscow","55.7558","37.6178","Russia","RU","RUS","Moskva","primary","17125000","1643318494"'
+    return list(map(float, data.replace('"', '').split(',')[2:4]))
 
 
-@app.route('/session', methods=['GET', 'POST'])
+@app.route('/session')
 def play():
-    x, y = get_rnd()
-    return render_template('3d.html', lat=float(x), lng=float(y))
+    return render_template('3d.html', coordinates=[[-23.5504, -46.6339], [-4.3317, 15.3139], [34.1139, -118.4068]])
+    # return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
+
+
+@app.route('/')
+def general():
+    return "Hello"
+    # return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
 
 
 if __name__ == '__main__':

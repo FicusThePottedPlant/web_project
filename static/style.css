@@ -87,8 +87,12 @@
     bottom: -100%;
 }
 
+.navigation[result] #next-game {
+    opacity: 1;
+    display: flex;
+}
+
 #alert {
-    padding:10px;
     left: 50%;
     top: -101px;
     color: #fff;
@@ -107,6 +111,23 @@
 
 #alert #alert-content {
     font-size: 23px;
+    text-align: center;
+}
+
+#next-game {
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+    color: #fff;
+    height: 45px;
+    display: none;
+    cursor: pointer;
+    background: #444;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .4s;
 }
 
 
