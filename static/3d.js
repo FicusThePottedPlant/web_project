@@ -1,12 +1,13 @@
 let map
 let myMap
 let panorama
-let cores = 0
+let score = 0
 let canMove = true
 let coordinates = []
 let longitude, latitude
 let my
 let sv
+let x = 3
 
 function modal(text) {
     let m = document.getElementById("alert")
@@ -40,8 +41,9 @@ function setCorrectLocation() {
         }
     let d = 12742 * Math.asin(Math.sqrt(Math.sin(degrees_to_radians((latitude - coordinates[0]) / 2)) ** 2 + Math.cos(degrees_to_radians(coordinates[0])) * Math.cos(degrees_to_radians(latitude)) * Math.sin(degrees_to_radians((longitude - coordinates[1]) / 2)) ** 2))
     d = Math.round(d)
-    let r = (5000 - d * 1.3 )
+    let r = (5000 - d * 1.3)
     r = r < 0 ? 0 : Math.round(r)
+    score = score+r
     var myPlacemark = new ymaps.Placemark(
             coordinates, {iconContent: "Вы выбрали"},{preset: 'islands#blackStretchyIcon',}
         );
@@ -69,8 +71,8 @@ function setCorrectLocation() {
     myMap.geoObjects.add(myGeoObject);
     myMap.geoObjects.add(new ymaps.Placemark( [latitude,longitude], {iconContent: "Вы здесь"}, {preset: 'islands#blackStretchyIcon'}))
     modal(`Вы ошиблись на ${Math.round(d)} км.\n
-     Получено ${r} очков`)
-     myGeoObject.balloon.open(myGeoObject.getCenter());
+     Получено ${r} очков`);
+     geoObjects.balloon.open(myMap.getCenter());
 }
 
 function initialize() {
@@ -86,7 +88,7 @@ function initialize() {
     })
     sv.getPanorama({
         location: my,
-        radius: 10000,
+        radius: 100,
         source: google.maps.StreetViewSource.OUTDOOR,
         preference: google.maps.StreetViewPreference.BEST
     }, processSVData)
@@ -118,13 +120,16 @@ function processSVData(data, status) {
         panorama.setVisible(true)
     }
     else{
+    console.log(x)
         sv.getPanorama({
         location: my,
 
-        radius: 1000000,
+        radius: 10**x,
         source: google.maps.StreetViewSource.OUTDOOR,
         preference: google.maps.StreetViewPreference.BEST
-    }, processSVData)}
+    }, processSVData)
+    x = x+1
+    }
 }
 
 onload = () => {
