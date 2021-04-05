@@ -34,6 +34,7 @@ function removeWatermarks() {
       setCorrectLocation()
     }
     nextGame().onclick = () => {
+    myMap.setZoom(3)
       ++game
       if (game === 2) {
         nextGame().children[0].textContent = "Закончить игру"
@@ -96,7 +97,11 @@ function setCorrectLocation() {
         coordinates
       ],
     },
-    properties: {}
+    properties: {
+    hintContent: d + ' км',
+            balloonContentHeader: d + ' км',
+            balloonContentBody: 'Получено ' + r + ' очков',
+    }
   }, {
     strokeColor: "#000000",
     strokeWidth: 5,
