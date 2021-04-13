@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.email.label }}
+        {{ form.email(class="form-control", type="email") }}
+    </p>
+    <p>
+        {{ form.name.label }}
+        {{ form.name(class="form-control") }}
+    </p>
+    <p>
+        {{ form.surname.label }}
+        {{ form.surname(class="form-control") }}
+    </p>
+    <p>
+        {{ form.age.label }}
+        {{ form.age(class="form-control", type="number") }}
+    </p>
+    <p>
+        {{ form.password.label }}
+        {{ form.password(class="form-control", type="password") }}
+    </p>
+    <p>
+        {{ form.password_control.label }}
+        {{ form.password_control(class="form-control", type="password") }}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+
+{% endblock %}
