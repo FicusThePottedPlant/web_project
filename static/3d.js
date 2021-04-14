@@ -1,7 +1,7 @@
 let map
 let myMap
 let panorama
-let score = 0
+let scores = 0
 let canMove = true
 let coordinates, games
 let my
@@ -37,9 +37,13 @@ function removeWatermarks() {
     myMap.setZoom(3)
       ++game
       if (game === 2) {
+
         nextGame().children[0].textContent = "Закончить игру"
       }
-      if (game === 3) {
+      if (game === 0) {
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', '/add_result/10')
+        xhr.send();
         document.location = "/"
       }
       x = 3
@@ -81,7 +85,7 @@ function setCorrectLocation() {
   d = Math.round(d)
   let r = (5000 - d * 1.3)
   r = r < 0 ? 0 : Math.round(r)
-  score = score + r
+  scores = scores + r
   let myPlacemark = new ymaps.Placemark(
     coordinates, {
       iconContent: "Вы выбрали"
@@ -132,6 +136,7 @@ function initialize() {
     zoom: 16,
     streetViewControl: false,
   })
+  removeWatermarks()
   sv.getPanorama({
     location: my,
     radius: 100,
@@ -143,16 +148,10 @@ function initialize() {
 function processSVData(data, status) {
   if (status === "OK") {
     const location = data.location
-    new google.maps.Marker({
-      position: location.latLng,
-      map,
-      title: location.description,
-    })
     panorama.setPano(location.pano)
     panorama.setOptions({
       streetViewControl: false,
       rotateView: false,
-      disableDefaultUI: true,
       addressControl: false,
       enableCloseButton: false,
       showRoadLabels: false,
