@@ -42,8 +42,8 @@
 }
 
 .navigation #map {
-    width: 75vw;
-    height: 75vh;
+    width: 100vw;
+    height: 100vh;
 }
 
 .navigation #check-country[disabled] {
@@ -151,3 +151,4 @@
         top: -101px;
     }
 }
+

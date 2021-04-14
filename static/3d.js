@@ -40,9 +40,9 @@ function removeWatermarks() {
 
         nextGame().children[0].textContent = "Закончить игру"
       }
-      if (game === 0) {
+      if (game === 3) {
         let xhr = new XMLHttpRequest()
-        xhr.open('POST', '/add_result/10')
+        xhr.open('POST', '/add_result/' + scores)
         xhr.send();
         document.location = "/"
       }
