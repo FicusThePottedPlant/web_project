@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <title>Game</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=40d1649f-0493-4b70-98ba-98533de7710b&lang=ru_RU"></script>
+    <script src="{{ url_for('static', filename='3d.js') }}"></script>
+    <script> initParams({{ coordinates }}) </script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+<body>
+<div id="alert">
+    <p id="alert-content"></p>
+</div>
+
+<div id="mp" style="display: none"></div>
+<div id="pano-wrapper">
+    <div id="pano" style="opacity: 0"></div>
+</div>
+<div class="navigation">
+    <div id="map"></div>
+    <div id="check-country" disabled>
+        <p>Ответить</p>
+    </div>
+    <div id="next-game">
+        <p>Следующий раунд</p>
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?&callback=initialize&libraries=&v=weekly" async></script>
+</body>
+</html>

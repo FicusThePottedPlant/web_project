@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+</head>
+<body>
+<header>
+    <nav>
+        <p>
+            <a href="/logout">{{current_user.nickname}}</a>
+            <a href="/records">Ваш рекорд - {{ current_user.score }} </a>
+        </p>
+        <p><a href="/session" style="margin-right: 50px;width:100px;">Игра</a>
+        </p>
+    </nav>
+</header>
+</body>
+</html>
