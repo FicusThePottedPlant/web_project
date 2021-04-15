@@ -26,43 +26,11 @@ def get_rnd():
     return list(map(float, data.replace('"', '').split(',')[2:4]))
 
 
-@app.route('/session', methods=['GET', 'POST'])
-def play():
-    """game page"""
-    if current_user.is_authenticated:
-        return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
-    redirect('/login')
-
-
-@app.route('/')
-def simple_page():
-    """main page"""
-    if current_user.is_authenticated:
-        man = current_user.id
-        return render_template('base.html', user=man)
-    else:
-        redirect('/login')
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """register page"""
-    form = AuthorizeForm()
-    if form.validate_on_submit():
-        if form.password.data == form.password_control.data:
-            user = User()
-            user.nickname = form.nickname.data
-            user.create_password_hash(form.password.data)
-            user.score = 0
-            db_sess.add(user)
-            db_sess.commit()
-            return redirect('/login')
-    return render_template('register.html', form=form)
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """login page"""
+    if current_user.is_authenticated:
+        return redirect(f'/id{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
 
@@ -74,6 +42,42 @@ def login():
                                message="Неправильное имя пользователя или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@login_required
+@app.route('/session', methods=['GET', 'POST'])
+def play():
+    """game page"""
+    if current_user.is_authenticated:
+        return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
+    return redirect('/login')
+
+
+@app.route('/')
+def simple_page():
+    """main page"""
+    if current_user.is_authenticated:
+        man = current_user.id
+        return render_template('base.html', user=man)
+    return redirect('/login')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """register page"""
+    if current_user.is_authenticated:
+        return redirect(f'/id{current_user.id}')
+    form = AuthorizeForm()
+    if form.validate_on_submit():
+        if form.password.data == form.password_control.data:
+            user = User()
+            user.nickname = form.nickname.data
+            user.create_password_hash(form.password.data)
+            user.score = 0
+            db_sess.add(user)
+            db_sess.commit()
+            return redirect('/login')
+    return render_template('register.html', form=form)
 
 
 @app.route('/add_result/<int:score>', methods=['GET', 'POST'])
@@ -91,6 +95,12 @@ def add_result(score):
 def logout():
     logout_user()
     return redirect("/login")
+
+
+@app.route('/id<int:profile_id>')
+def profile(profile_id):
+    profile_data = db_sess.query(User).filter(User.id == profile_id).first()
+    return f'{profile_data}'
 
 
 if __name__ == '__main__':
