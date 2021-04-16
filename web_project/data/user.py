@@ -13,7 +13,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    nickname = sqlalchemy.Column(sqlalchemy.String,
+    username = sqlalchemy.Column(sqlalchemy.String,
                                  index=True, unique=True, nullable=True)
     score = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     medium = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)

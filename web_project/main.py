@@ -1,9 +1,9 @@
+import os
 from random import choice
 
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response, redirect
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_restful import abort
-from werkzeug.utils import redirect
 
 from data import db_session
 from data.user import User
@@ -34,8 +34,7 @@ def login():
         return redirect(f'/id{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
-
-        user = db_sess.query(User).filter(User.nickname == form.nickname.data).first()
+        user = db_sess.query(User).filter(User.username == form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
@@ -71,7 +70,7 @@ def register():
     if form.validate_on_submit():
         if form.password.data == form.password_control.data:
             user = User()
-            user.nickname = form.nickname.data
+            user.username = form.username.data
             user.create_password_hash(form.password.data)
             db_sess.add(user)
             db_sess.commit()
@@ -114,4 +113,5 @@ def not_found(error):
 if __name__ == '__main__':
     db_session.global_init("db/web_project.db")
     db_sess = db_session.create_session()
-    app.run(port=8080, host='127.0.0.1')
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
