@@ -1,3 +1,4 @@
+import os
 from random import choice
 
 from flask import Flask, render_template, request, jsonify, make_response, redirect
