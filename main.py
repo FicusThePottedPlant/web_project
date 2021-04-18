@@ -3,7 +3,6 @@ from random import choice
 from flask import Flask, render_template, request, jsonify, make_response, redirect
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_restful import abort
-from flask_ngrok import run_with_ngrok
 
 from data import db_session
 from data.user import User
