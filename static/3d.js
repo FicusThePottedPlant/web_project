@@ -40,8 +40,6 @@ function removeWatermarks() {
     setTimeout(() => {
         let l = pano().children[document.getElementById("pano").children.length - 2].children[0].children[0].children[0]
         let b = pano().children[document.getElementById("pano").children.length - 1]
-        document.getElementsByClassName("gm-compass")[game].style.display = "none"
-        document.querySelector("#pano > div.gm-style > div:nth-child(11) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div:nth-child(2) > div").style.display = "none"
         l.style.display = "none"
         b.style.display = "none"
         pano().style.opacity = 1
