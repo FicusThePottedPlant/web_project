@@ -1,19 +1,19 @@
 from random import choice
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, make_response, redirect
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from werkzeug.utils import redirect
+from flask_restful import abort
+from flask_ngrok import run_with_ngrok
 
 from data import db_session
 from data.user import User
 from forms.login_form import LoginForm
-from forms.register_form import AuthorizeForm
+from forms.signup_form import AuthorizeForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cheese'
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -23,7 +23,7 @@ def load_user(user_id):
 def get_rnd():
     """getting random location from file"""
     data = choice(open('worldcities.csv', encoding='utf-8').readlines())
-    return list(map(float, data.replace('"', '').split(',')[2:4]))
+    return list(map(float, data.split()))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,68 +33,70 @@ def login():
         return redirect(f'/id{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
-
-        user = db_sess.query(User).filter(User.nickname == form.nickname.data).first()
+        user = db_sess.query(User).filter(User.username == form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html',
                                message="Неправильное имя пользователя или пароль",
                                form=form)
-    return render_template('login.html', title='Авторизация', form=form)
+    return render_template('login.html', title='Авторизация', form=form, message="")
 
 
 @login_required
 @app.route('/session', methods=['GET', 'POST'])
 def play():
     """game page"""
-    if current_user.is_authenticated:
-        return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
-    return redirect('/login')
+    return render_template('3d.html', coordinates=[get_rnd(), get_rnd(), get_rnd()])
 
 
 @app.route('/')
 def simple_page():
     """main page"""
-    if current_user.is_authenticated:
-        man = current_user.id
-        return render_template('base.html', user=man)
-    return redirect('/login')
+    return render_template('base.html', user=current_user)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """register page"""
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    """signup page"""
     if current_user.is_authenticated:
         return redirect(f'/id{current_user.id}')
     form = AuthorizeForm()
     if form.validate_on_submit():
         if form.password.data == form.password_control.data:
-            user = User()
-            user.nickname = form.nickname.data
-            user.create_password_hash(form.password.data)
-            user.score = 0
-            db_sess.add(user)
-            db_sess.commit()
-            return redirect('/login')
-    return render_template('register.html', form=form)
+            if not db_sess.query(User).filter(User.username == form.username.data).first():
+                user = User()
+                user.username = form.username.data
+                user.create_password_hash(form.password.data)
+                db_sess.add(user)
+                db_sess.commit()
+                return redirect('/login')
+            else:
+                return render_template('signup.html', form=form, message="Такое имя пользователя уже занято")
+        else:
+            return render_template('signup.html', form=form, message="Пароли не совпадают")
+    return render_template('signup.html', form=form, message="")  # !!!do not remove 'message' argument here
 
 
 @app.route('/add_result/<int:score>', methods=['GET', 'POST'])
 def add_result(score):
     """handle score from js"""
     with app.app_context():
-        if request.method == 'POST':
+        if request.method == 'POST' and current_user.is_authenticated and score <= 15000:
             current_user.score = score + current_user.score
+            current_user.games_played += 1
+            current_user.medium = round(current_user.score / current_user.games_played)
+            current_user.max = score if score > current_user.max else current_user.max
             db_sess.commit()
             return 'How did you get here?'
+        abort(404)
 
 
 @app.route('/logout')
-@login_required
 def logout():
-    logout_user()
-    return redirect("/login")
+    if current_user.is_authenticated:
+        logout_user()
+    return redirect('/login')
 
 
 @app.route('/id<int:profile_id>')
@@ -103,7 +105,13 @@ def profile(profile_id):
     return f'{profile_data}'
 
 
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Page is not found'}), 404)
+
+
 if __name__ == '__main__':
     db_session.global_init("db/web_project.db")
     db_sess = db_session.create_session()
-    app.run(port=8080, host='127.0.0.1')
+    # port = int(os.environ.get("PORT", 5000))
+    app.run()

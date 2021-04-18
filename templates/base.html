@@ -3,24 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-light bg-dark">
+<nav id="navbar">
+    <ul>
+        <li><a href="/">Главное меню</a></li>
         {% if current_user.is_authenticated %}
-        <p>
-            <a href="/logout" style="color: white; margin-right:15px;">{{ current_user.name }}</a>
-            <a href="/records" style="color: white">Ваш рекорд - {{ current_user.score }} </a>
-        </p>
+        <li class="dropdown">
+
+            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+
+            <div class="dropdown-content">
+                <a href="/id{{current_user.id}}">Профиль</a>
+                <a href="/settings">Настройки</a>
+                <a href="/logout">Выйти</a>
+            </div>
+        </li>
         {% else %}
-        <p>
-            <a href="/register">Зарегистрироваться</a>
-            <a href="/login">Войти</a>
-        </p>
+        <li  class="action"><a href="/login">Войти</a></li>
         {% endif %}
-        <p><a href="/session" style="margin-right: 50px;width:100px;">Игра</a>
-        </p>
-    </nav>
-</header>
+    </ul>
+</nav>
+<button class="start" onclick="location.href='/session'" type="button">
+    Начать игру
+</button>
 </body>
 </html>
