@@ -1,0 +1,31 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <title>Log in</title>
+</head>
+    <body>
+        <div id="forms">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <h1>Вход</h1>
+                <p>
+                    {{ form.username.label }}<br>
+                    {{ form.username(class="form-control", type="username",maxlength=16) }}<br>
+                </p>
+                <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password(class="form-control", type="password",minlength=6) }}<br>
+                </p>
+                <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+                {% if message != "" %}
+                    <div id="authentication-alert-message">{{ message }}</div>
+                {% endif %}
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                <a href="/signup">Регистрация</a>
+                <a href="/">Войти анонимно</a>
+            </form>
+        </div>
+    </body>
+</html>
