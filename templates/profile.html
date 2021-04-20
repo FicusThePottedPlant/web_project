@@ -2,9 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{user.username}}</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
+<nav id="navbar">
+    <ul>
+        <li><a href="/">Главное меню</a></li>
+        {% if current_user.is_authenticated %}
+        <li class="dropdown">
+
+            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+
+            <div class="dropdown-content">
+                <a href="/id{{current_user.id}}">Профиль</a>
+                <a href="/settings">Настройки</a>
+                <a href="/logout">Выйти</a>
+            </div>
+        </li>
+        {% else %}
+        <li class="action"><a href="/login">Войти</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<div class="profile">
+    <h1>{{user.username}}</h1>
+<!--    <table>-->
+<!--        <tr >-->
+<!--            <td>Всего очков</td>-->
+<!--            <td>Игр сыграно</td>-->
+<!--            <td>Максимальный результат</td>-->
+<!--            <td>Средний результат</td>-->
+<!--            <th>Всего очков</th>-->
+<!--            <th>Игр сыграно</th>-->
+<!--            <th>Максимальный результат</th>-->
+<!--            <th>Средний результат</th>-->
+<!--        </tr>-->
+<!--    </table>-->
+</div>
+
 
 </body>
 </html>

@@ -436,3 +436,16 @@ html {
 	font-size: 23px;
 	font-family: fangsong;
 }
+
+.profile {
+    top: 10vh;
+	left: 50%;
+	height: 58vh;
+	max-width: 500px;
+	position: absolute;
+	transform: translateX(-50%);
+}
+.profile h1 {
+    font-size: 32px;
+    font-family: monospace;
+}

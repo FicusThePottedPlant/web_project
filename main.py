@@ -4,16 +4,17 @@ from random import choice
 from flask import Flask, render_template, request, jsonify, make_response, redirect
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_restful import abort
-
 from data import db_session
 from data.user import User
 from forms.login_form import LoginForm
 from forms.signup_form import AuthorizeForm
+from forms.edit_form import EditForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cheese'
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -101,8 +102,31 @@ def logout():
 
 @app.route('/id<int:profile_id>')
 def profile(profile_id):
+    return 'в разработке'
     profile_data = db_sess.query(User).filter(User.id == profile_id).first()
-    return f'{profile_data}'
+    return render_template('profile.html', user=profile_data)
+
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    return 'в разработке'
+    if current_user.is_authenticated:
+        form = EditForm()
+        form.username.data = current_user.username
+        if form.validate_on_submit():
+            if current_user.hashed_password == current_user.create_password_hash(form.password.data):
+                if not db_sess.query(User).filter(User.username == form.username.data).first():
+                    current_user.username = form.username.data
+                    current_user.hashed_password = current_user.create_password_hash(form.password_control.data)
+                    db_sess.commit()
+                    return redirect('/login')
+                else:
+                    return render_template('signup.html', form=form, message="Такое имя пользователя уже занято")
+            else:
+                return render_template('signup.html', form=form, message="Неверный текущий пароль")
+        return render_template('settings.html', user=current_user, form=form)
+    else:
+        return redirect('/login')
 
 
 @app.errorhandler(404)
@@ -114,4 +138,4 @@ if __name__ == '__main__':
     db_session.global_init("db/web_project.db")
     db_sess = db_session.create_session()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)

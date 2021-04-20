@@ -5,6 +5,6 @@ from wtforms.validators import DataRequired
 
 class AuthorizeForm(FlaskForm):
     username = StringField('Имя пользователя', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password_control = PasswordField('Повторите пароль', validators=[DataRequired()])
+    password = PasswordField('Старый пароль', validators=[DataRequired()])
+    password_control = PasswordField('Новый пароль', validators=[DataRequired()])
     submit = SubmitField('Зарегестрироваться')
