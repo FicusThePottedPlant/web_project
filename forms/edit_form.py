@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, SubmitField, BooleanField, StringField
+from wtforms import PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 
 
-class LoginForm(FlaskForm):
+class EditForm(FlaskForm):
     username = StringField('Имя пользователя', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Войти')
+    password_control = PasswordField('Повторите пароль', validators=[DataRequired()])
+    submit = SubmitField('Сменить')

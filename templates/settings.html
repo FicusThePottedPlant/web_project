@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <title>Настройки</title>
+</head>
+<body>
+<nav id="navbar">
+    <ul>
+        <li><a href="/">Главное меню</a></li>
+        {% if current_user.is_authenticated %}
+        <li class="dropdown">
+
+            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+
+            <div class="dropdown-content">
+                <a href="/id{{current_user.id}}">Профиль</a>
+                <a href="/settings">Настройки</a>
+                <a href="/logout">Выйти</a>
+            </div>
+        </li>
+        {% else %}
+        <li class="action"><a href="/login">Войти</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<div id="forms">
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <h1>Редактировать аккаунт</h1>
+        <p>
+            {{ form.username.label }}
+            {{ form.username(class="form-control", type="text",maxlength=16) }}
+        </p>
+        <p>
+            {{ form.password.label }}
+            {{ form.password(class="form-control", type="password",minlength=6) }}
+        </p>
+        <p>
+            {{ form.password_control.label }}
+            {{ form.password_control(class="form-control", type="password",minlength=6) }}
+        </p>
+        {% if message != "" %}
+        <div id="authentication-alert-message">{{ message }}</div>
+        {% endif %}
+
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+</div>
+</body>
+</html>

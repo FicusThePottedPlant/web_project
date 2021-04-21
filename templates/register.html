@@ -1,22 +1,8 @@
-{% extends "base.html" %}
-{% block content %}
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.email.label }}
-        {{ form.email(class="form-control", type="email") }}
-    </p>
-    <p>
-        {{ form.name.label }}
-        {{ form.name(class="form-control") }}
-    </p>
-    <p>
-        {{ form.surname.label }}
-        {{ form.surname(class="form-control") }}
-    </p>
-    <p>
-        {{ form.age.label }}
-        {{ form.age(class="form-control", type="number") }}
+        {{ form.nickname.label }}
+        {{ form.nickname(class="form-control", type="text") }}
     </p>
     <p>
         {{ form.password.label }}
@@ -29,4 +15,3 @@
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 
-{% endblock %}

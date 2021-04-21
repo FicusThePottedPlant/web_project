@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
+    <meta charset="UTF-8">
+    <title>{{user.username}}</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
@@ -23,12 +23,26 @@
             </div>
         </li>
         {% else %}
-        <li  class="action"><a href="/login">Войти</a></li>
+        <li class="action"><a href="/login">Войти</a></li>
         {% endif %}
     </ul>
 </nav>
-<button class="start" onclick="location.href='/session'" type="button">
-    Начать игру
-</button>
+<div class="profile">
+    <h1>{{user.username}}</h1>
+<!--    <table>-->
+<!--        <tr >-->
+<!--            <td>Всего очков</td>-->
+<!--            <td>Игр сыграно</td>-->
+<!--            <td>Максимальный результат</td>-->
+<!--            <td>Средний результат</td>-->
+<!--            <th>Всего очков</th>-->
+<!--            <th>Игр сыграно</th>-->
+<!--            <th>Максимальный результат</th>-->
+<!--            <th>Средний результат</th>-->
+<!--        </tr>-->
+<!--    </table>-->
+</div>
+
+
 </body>
 </html>
