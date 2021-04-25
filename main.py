@@ -111,12 +111,12 @@ def profile(profile_id):
     profile_data = db_sess.query(User).filter(User.id == profile_id).first()
     if profile_data:
         return render_template('profile.html', user=profile_data)
-    return render_template('profile.html', user='Страница не найдена')
+    return render_template('profile.html', user='Пользователь не найден')
 
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    return render_template('profile.html', user='Страница не найдена')
+    return render_template('profile.html', user='Страница в разработке')
 
 
 @app.errorhandler(404)
