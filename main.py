@@ -108,31 +108,15 @@ def logout():
 
 @app.route('/id<int:profile_id>')
 def profile(profile_id):
-    return 'в разработке'
     profile_data = db_sess.query(User).filter(User.id == profile_id).first()
-    return render_template('profile.html', user=profile_data)
+    if profile_data:
+        return render_template('profile.html', user=profile_data)
+    return render_template('profile.html', user='Страница не найдена')
 
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    return 'в разработке'
-    if current_user.is_authenticated:
-        form = EditForm()
-        form.username.data = current_user.username
-        if form.validate_on_submit():
-            if current_user.hashed_password == current_user.create_password_hash(form.password.data):
-                if not db_sess.query(User).filter(User.username == form.username.data).first():
-                    current_user.username = form.username.data
-                    current_user.hashed_password = current_user.create_password_hash(form.password_control.data)
-                    db_sess.commit()
-                    return redirect('/login')
-                else:
-                    return render_template('signup.html', form=form, message="Такое имя пользователя уже занято")
-            else:
-                return render_template('signup.html', form=form, message="Неверный текущий пароль")
-        return render_template('settings.html', user=current_user, form=form)
-    else:
-        return redirect('/login')
+    return render_template('profile.html', user='Страница не найдена')
 
 
 @app.errorhandler(404)

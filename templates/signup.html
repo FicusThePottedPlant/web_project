@@ -23,7 +23,7 @@
             {{ form.password_control.label }}
             {{ form.password_control(class="form-control", type="password",minlength=6) }}
         </p>
-        {% if message != "" %}
+        {% if message %}
         <div id="authentication-alert-message">{{ message }}</div>
         {% endif %}
 

@@ -20,7 +20,7 @@
             {{ form.password(class="form-control", type="password",minlength=6) }}<br>
         </p>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        {% if message != "" %}
+        {% if message %}
         <div id="authentication-alert-message">{{ message }}</div>
         {% endif %}
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>

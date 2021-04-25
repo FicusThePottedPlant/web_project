@@ -42,6 +42,7 @@ function removeWatermarks() {
         let b = pano().children[document.getElementById("pano").children.length - 1]
         l.style.display = "none"
         b.style.display = "none"
+        pano().style.height = "110vh"
         pano().style.opacity = 1
         nextGame().onclick = () => {
             myMap.setZoom(3)
@@ -68,9 +69,11 @@ function removeWatermarks() {
         }
         checkCNT().onclick = () => {
             // handle click on 'Ответить'
-            document.querySelector(".navigation").setAttribute("result", "")
-            pano().parentElement.setAttribute("unreachable", "")
-            setCorrectLocation()
+            if (!checkCNT().hasAttribute("disabled")) {
+                document.querySelector(".navigation").setAttribute("result", "")
+                pano().parentElement.setAttribute("unreachable", "")
+                setCorrectLocation()
+            }
         }
     }, 1000)
 }
