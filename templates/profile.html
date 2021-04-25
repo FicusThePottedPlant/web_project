@@ -27,7 +27,7 @@
         {% endif %}
     </ul>
 </nav>
-{% if user != 'Страница не найдена' %}
+{% if user != 'Пользователь не найден' and user != 'Страница в разработке' %}
 <div class="profile">
     <div class="basic">
         <h1>{{user.username}}</h1>
