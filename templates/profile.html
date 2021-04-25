@@ -35,10 +35,10 @@
     </div>
     <div class="statistics">
         <h1>Игровая статистика</h1>
-        <p>Всего очков: <span>234</span></p>
-        <p>Всего сыграно: <span>1</span></p>
-        <p>Лучший результат: <span>234</span></p>
-        <p>Средний результат: <span>234</span></p>
+        <p>Всего очков: <span>{{user.score}}</span></p>
+        <p>Всего сыграно: <span>{{user.games_played}}</span></p>
+        <p>Лучший результат: <span>{{user.max}}</span></p>
+        <p>Средний результат: <span>{{user.medium}}</span></p>
     </div>
 </div>
 {% else %}
