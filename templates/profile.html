@@ -14,7 +14,7 @@
         {% if current_user.is_authenticated %}
         <li class="dropdown">
 
-            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+            <a class="dropbtn">{{current_user.username}}</a>
 
             <div class="dropdown-content">
                 <a href="/id{{current_user.id}}">Профиль</a>

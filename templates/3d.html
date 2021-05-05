@@ -17,7 +17,7 @@
         {% if current_user.is_authenticated %}
         <li class="dropdown">
 
-            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+            <a class="dropbtn">{{current_user.username}}</a>
 
             <div class="dropdown-content">
                 <a href="/id{{current_user.id}}">Профиль</a>
@@ -39,6 +39,9 @@
     <div id="pano" style="opacity: 0"></div>
 </div>
 <div class="navigation">
+    <div class="close" onclick="closeNavigation()">
+        <p>&times;</p>
+    </div>
     <div id="map"></div>
     <div id="check-country" disabled>
         <p>Ответить</p>
@@ -46,6 +49,9 @@
     <div id="next-game">
         <p>Следующий раунд</p>
     </div>
+</div>
+<div id="show-navigation" onclick="showNavigation()">
+    <p>показать карту</p>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?&callback=setPanorama&libraries=&v=weekly" async></script>
 </body>

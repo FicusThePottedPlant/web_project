@@ -108,6 +108,29 @@
     transition: width .4s, height .4s, right .3s, bottom .3s;
 }
 
+.navigation .close {
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    text-align: center;
+    display: none;
+    font-size: 25px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 999;
+}
+
+.navigation .close p {
+    margin-top: -2px;
+    margin-left: -1px;
+}
+
 .navigation #map {
     width: 100vw;
     height: 100vh;
@@ -142,13 +165,13 @@
     font-weight: 600;
 }
 
-.navigation[result] {
-    width: 75vw;
-    height: 75vh;
-    right: 12.5vw;
-    bottom: 12.5vh;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
-}
+/*.navigation[result] {*/
+/*    width: 75vw;*/
+/*    height: 75vh;*/
+/*    right: 12.5vw;*/
+/*    bottom: 12.5vh;*/
+/*    box-shadow: 0 0 20px rgba(0, 0, 0, .3);*/
+/*}*/
 
 .navigation[result] #check-country {
     bottom: -100%;
@@ -157,6 +180,25 @@
 .navigation[result] #next-game {
     opacity: 1;
     display: flex;
+}
+
+#show-navigation {
+    width: 94vw;
+    height: 60px;
+    bottom: 10px;
+    box-shadow: 0 0 10px rgba(5, 100, 20, .5);
+    border-radius: 20px;
+    left: 3vw;
+    display: none;
+    z-index: 999;
+    position: absolute;
+    background: #00796B;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    font-variant: small-caps;
+    font-size: 25px;
+    color: #fff;
 }
 
 #alert {
@@ -222,10 +264,38 @@
     }
 }
 
-@media screen and (max-width: 1440px) {
-    :root {
-        --minimap-width: 500px;
-        --minimap-height: 405px;
+/*@media screen and (max-width: 1440px) {*/
+/*    :root {*/
+/*        --minimap-width: 500px;*/
+/*        --minimap-height: 405px;*/
+/*    }*/
+/*}*/
+
+@media screen and (min-width: 880px) {
+    .navigation[result] {
+        width: 75vw;
+        height: 75vh;
+        right: 12.5vw;
+        bottom: 12.5vh;
+        box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+    }
+}
+
+@media screen and (max-width: 880px) {
+    .navigation {
+        right: 3vw;
+        width: 94vw;
+        height: 89vh;
+        display: none;
+        bottom: calc((11vh - 45px) / 2);
+    }
+
+    #show-navigation {
+        display: flex;
+    }
+
+    .navigation .close {
+        display: flex;
     }
 }
 

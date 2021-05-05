@@ -11,6 +11,7 @@ from data.user import User
 from forms.edit_form import EditForm
 from forms.login_form import LoginForm
 from forms.signup_form import AuthorizeForm
+from flask_ngrok import run_with_ngrok
 
 app = Flask(__name__)
 api = Api(app)
@@ -20,6 +21,7 @@ api.add_resource(rest_api_stuff.AllUsersResourse, '/api/users/')
 app.config['SECRET_KEY'] = 'cheese'
 login_manager = LoginManager()
 login_manager.init_app(app)
+run_with_ngrok(app)
 
 
 @login_manager.user_loader
@@ -128,4 +130,5 @@ if __name__ == '__main__':
     db_session.global_init("db/web_project.db")
     db_sess = db_session.create_session()
     port = int(os.environ.get("PORT", 5000))
+    app.run()
     app.run(host='0.0.0.0', port=port)

@@ -33,7 +33,31 @@ function modal(text) {
     }
 }
 
+function showNavigation() {
+    if (innerWidth <= 880) {
+        document.getElementById("show-navigation").style.display = "none"
+        document.querySelector(".navigation").style.display = "block"
+    }
+}
 
+function toggleCloseNavigationButton() {
+    if (innerWidth <= 880) {
+        let btn = document.querySelector(".navigation .close")
+
+        if (btn.style.display !== "none") {
+            btn.style.display = "none"
+        } else {
+            btn.style.display = "flex"
+        }
+    }
+}
+
+function closeNavigation() {
+    if (innerWidth <= 880) {
+        document.getElementById("show-navigation").style.display = "flex"
+        document.querySelector(".navigation").style.display = "none"
+    }
+}
 
 function removeWatermarks() {
     // delete compass and other elements from panorama
@@ -57,7 +81,6 @@ function removeWatermarks() {
                 xhr.open('POST', '/add_result/' + scores)
                 xhr.send()
                 document.location = "/"
-
             }
             x = 3
             document.querySelector(".navigation").removeAttribute("result")
@@ -65,6 +88,8 @@ function removeWatermarks() {
             canMove = true
             setPanorama()
             checkCNT().setAttribute("disabled", "")
+            toggleCloseNavigationButton()
+            closeNavigation()
             pano().parentElement.removeAttribute("unreachable")
         }
         checkCNT().onclick = () => {
@@ -99,6 +124,7 @@ function setCorrectLocation() {
     r = r < 0 ? 0 : Math.round(r)
     // show pretty alert
     modal(`Вы ошиблись на ${Math.round(d)} км.<br>Получено ${r} очков`)
+    toggleCloseNavigationButton()
     scores = scores + r
     // set placemark on location which you choose
     let myPlacemark = new ymaps.Placemark(
@@ -136,7 +162,6 @@ function setCorrectLocation() {
     }, {
         preset: 'islands#blackStretchyIcon'
     }))
-
 }
 
 function setPanorama() {
