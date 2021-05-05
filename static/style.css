@@ -273,6 +273,7 @@
 
 @media screen and (min-width: 880px) {
     .navigation[result] {
+        top: 10vh;
         width: 75vw;
         height: 75vh;
         right: 12.5vw;
@@ -285,7 +286,7 @@
     .navigation {
         right: 3vw;
         width: 94vw;
-        height: 89vh;
+        height: 75vh;
         display: none;
         bottom: calc((11vh - 45px) / 2);
     }
