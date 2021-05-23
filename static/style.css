@@ -380,12 +380,10 @@
 
 .profile {
     width: 40vw;
-    min-width: 600px;
+    min-width: 200px;
     max-width: 1200px;
     min-height: 84vh;
     margin: 100px auto 0;
-    border: 1px solid #000;
-    border-radius: 40px 40px 0 0;
 }
 
 .profile .basic {
