@@ -9,6 +9,7 @@ let sv
 let x = 3
 let game = 0
 
+
 function pano() {
     return document.getElementById("pano")
 }
@@ -33,7 +34,9 @@ function modal(text) {
     }
 }
 
+// function for mobile adaptation
 function showNavigation() {
+    // open mini-map
     if (innerWidth <= 880) {
         document.getElementById("show-navigation").style.display = "none"
         document.querySelector(".navigation").style.display = "block"
@@ -41,6 +44,7 @@ function showNavigation() {
 }
 
 function toggleCloseNavigationButton() {
+    // show button to close
     if (innerWidth <= 880) {
         let btn = document.querySelector(".navigation .close")
 
@@ -53,15 +57,16 @@ function toggleCloseNavigationButton() {
 }
 
 function closeNavigation() {
+    // close minimap
     if (innerWidth <= 880) {
         document.getElementById("show-navigation").style.display = "flex"
         document.querySelector(".navigation").style.display = "none"
     }
 }
 
-function removeWatermarks() {
-    // delete compass and other elements from panorama
+function handleEvents() {
     setTimeout(() => {
+        // delete compass and other elements from panorama
         let l = pano().children[document.getElementById("pano").children.length - 2].children[0].children[0].children[0]
         let b = pano().children[document.getElementById("pano").children.length - 1]
         l.style.display = "none"
@@ -69,8 +74,10 @@ function removeWatermarks() {
         pano().style.height = "110vh"
         pano().style.opacity = 1
         nextGame().onclick = () => {
+            // set new level
             myMap.setZoom(3)
-                ++game
+            ++game
+            document.getElementById("game").innerHTML = (game + 1) + '/3'
             // and change behaviour of button next-game
             if (game === 2) {
                 nextGame().children[0].textContent = "Закончить игру"
@@ -81,15 +88,16 @@ function removeWatermarks() {
                 xhr.open('POST', '/add_result/' + scores)
                 xhr.send()
                 document.location = "/"
+
             }
             x = 3
             document.querySelector(".navigation").removeAttribute("result")
             myMap.geoObjects.removeAll()
             canMove = true
             setPanorama()
-            checkCNT().setAttribute("disabled", "")
             toggleCloseNavigationButton()
             closeNavigation()
+            checkCNT().setAttribute("disabled", "")
             pano().parentElement.removeAttribute("unreachable")
         }
         checkCNT().onclick = () => {
@@ -103,9 +111,10 @@ function removeWatermarks() {
     }, 1000)
 }
 
-// handle from html jinja2 attribute
-function initParams(a) {
+// handling from html jinja2 attributes
+function initParams(a, scores_c) {
     games = a
+    coeff = scores_c
 }
 
 function setCorrectLocation() {
@@ -120,12 +129,13 @@ function setCorrectLocation() {
     // calculate distance between 2 points
     let d = 12742 * Math.asin(Math.sqrt(Math.sin(degrees_to_radians((latitude - coordinates[0]) / 2)) ** 2 + Math.cos(degrees_to_radians(coordinates[0])) * Math.cos(degrees_to_radians(latitude)) * Math.sin(degrees_to_radians((longitude - coordinates[1]) / 2)) ** 2))
     d = Math.round(d)
-    let r = (5000 - d * 1.3) // calculate scores
+    let r = (5000 - d * coeff) // calculate scores
     r = r < 0 ? 0 : Math.round(r)
     // show pretty alert
     modal(`Вы ошиблись на ${Math.round(d)} км.<br>Получено ${r} очков`)
     toggleCloseNavigationButton()
     scores = scores + r
+    document.getElementById("scores").innerHTML = scores
     // set placemark on location which you choose
     let myPlacemark = new ymaps.Placemark(
         coordinates, {
@@ -162,6 +172,7 @@ function setCorrectLocation() {
     }, {
         preset: 'islands#blackStretchyIcon'
     }))
+
 }
 
 function setPanorama() {
@@ -178,16 +189,17 @@ function setPanorama() {
         zoom: 16,
         streetViewControl: false,
     })
-    // recursively search for pano using google function
+    // recursively search for panorama using google function
     sv.getPanorama({
         location: my,
         radius: 100,
         source: google.maps.StreetViewSource.OUTDOOR,
         preference: google.maps.StreetViewPreference.BEST
     }, processSVData)
-    removeWatermarks()
+    handleEvents()
 }
 
+// getting a panorama
 function processSVData(data, status) {
     if (status === "OK") {
         const location = data.location
@@ -200,6 +212,7 @@ function processSVData(data, status) {
             showRoadLabels: false,
             fullscreenControl: false,
             zoomControl: false,
+            MotionTrackingControlOptions: 'LEFT_BOTTOM',
         })
         panorama.setPov({
             heading: 270,
@@ -208,25 +221,26 @@ function processSVData(data, status) {
         panorama.setVisible(true)
     } else {
         sv.getPanorama({
-                location: my,
-                radius: 10 ** x,
-                source: google.maps.StreetViewSource.OUTDOOR,
-                preference: google.maps.StreetViewPreference.BEST
-            }, processSVData)
-            ++x
+            location: my,
+            radius: 10 ** x,
+            source: google.maps.StreetViewSource.OUTDOOR,
+            preference: google.maps.StreetViewPreference.BEST
+        }, processSVData)
+        ++x
     }
 }
 
-ymaps.ready(init) // initialize js yandex map api map
+
+ymaps.ready(init) // initialize map of js yandex map API
 
 function init() {
     myMap = new ymaps.Map("map", {
-        center: [14.3, 90.5],
-        zoom: 3,
+        center: coeff = 1000.3 ? [games[0][0], games[0][1]] : [14.3, 90.5],
+        zoom: coeff = 1000.3 ? 10 : 3,
     }, {
         minZoom: 2,
         searchControlProvider: 'yandex#search',
-        yandexMapDisablePoiInteractivity: true
+        // yandexMapDisablePoiInteractivity: true
     })
     myMap.controls.remove('searchControl')
     myMap.controls.remove('typeSelector')
@@ -241,7 +255,7 @@ function init() {
     myMap.behaviors.enable('scrollZoom')
 
     // handling click on map to set a marker
-    myMap.events.add('click', function(e) {
+    myMap.events.add('click', function (e) {
         if (canMove) {
             let coords = e.get('coords')
             myMap.geoObjects.removeAll()

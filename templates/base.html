@@ -2,33 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <script>
+        function locatorButtonPressed() {
+            console.log(1)
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    document.getElementById("nearby").setAttribute('href', 'session/' + position.coords.latitude + ' ' + position.coords.longitude);
+                },
+                error => {
+                    console.log(error.message);
+                },
+            )
+        }
+    </script>
 </head>
 <body>
 <nav id="navbar">
     <ul>
-        <li><a href="/">Главное меню</a></li>
+        <li style="background-color: #408643"><a href="/">Главное меню</a></li>
         {% if current_user.is_authenticated %}
-        <li class="dropdown">
+            <li class="dropdown">
 
-            <a href="javascript:void(0)" class="dropbtn">{{current_user.username}}</a>
+                <a href="javascript:void(0)" class="dropbtn">{{ current_user.username }}</a>
 
-            <div class="dropdown-content">
-                <a href="/id{{current_user.id}}">Профиль</a>
-                <a href="/settings">Настройки</a>
-                <a href="/logout">Выйти</a>
-            </div>
-        </li>
+                <div class="dropdown-content">
+                    <a href="/id{{ current_user.id }}">Профиль</a>
+                    <a href="/settings">Настройки</a>
+                    <a href="/logout">Выйти</a>
+                </div>
+            </li>
         {% else %}
-        <li  class="action"><a href="/login">Войти</a></li>
+            <li class="action"><a href="/login">Войти</a></li>
         {% endif %}
     </ul>
 </nav>
-<button class="start" onclick="location.href='/session'" type="button">
-    Начать игру
-</button>
+
+<section class="cards-wrapper">
+    <div class="card-grid-space">
+        <a class="card" href="/session/world"
+           style="--bg-img: url(https://niklibrary.ru/images/Abonement/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%97%D0%B5%D0%BC%D0%BB%D0%B8.jpg)">
+            <div>
+                <h1>Мир</h1>
+                <p>Всевозможные места мира</p>
+            </div>
+        </a>
+    </div>
+    <div class="card-grid-space">
+        <a class="card" href="session/russia"
+           style="--bg-img: url('https://s1.1zoom.ru/big3/277/338447-Berserker.jpg')">
+            <div>
+                <h1>Россия</h1>
+                <p>Всевозможные места России</p>
+            </div>
+        </a>
+    </div>
+    <div class="card-grid-space" onclick='locatorButtonPressed()'>
+        <a class="card" id="nearby" onmouseover='locatorButtonPressed()' href="session/error"
+           style="--bg-img: url('https://cdn.trinixy.ru/pics5/20190403/oleg_kononenko_12.jpg')">
+            <div>
+                <h1>Поблизости</h1>
+                <p>Места рядом с вами</p>
+            </div>
+        </a>
+    </div>
+</section>
+
 </body>
 </html>

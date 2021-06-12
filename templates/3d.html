@@ -7,27 +7,31 @@
     <script src="{{ url_for('static', filename='3d.js') }}"></script>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <script> initParams({{ coordinates }}) </script>
+    <script> initParams({{ coordinates }}, {{score_c}}) </script>
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
-<nav id="navbar" style="z-index: 3;">
+<nav id="navbar" style="z-index: 2;">
     <ul>
         <li><a href="/">Главное меню</a></li>
+
         {% if current_user.is_authenticated %}
-        <li class="dropdown">
+            <li class="dropdown">
 
-            <a class="dropbtn">{{current_user.username}}</a>
+                <a class="dropbtn">{{ current_user.username }}</a>
 
-            <div class="dropdown-content">
-                <a href="/id{{current_user.id}}">Профиль</a>
-                <a href="/settings">Настройки</a>
-                <a href="/logout">Выйти</a>
-            </div>
-        </li>
+                <div class="dropdown-content">
+                    <a href="/id{{ current_user.id }}">Профиль</a>
+                    <a href="/settings">Настройки</a>
+                    <a href="/logout">Выйти</a>
+                </div>
+            </li>
+
         {% else %}
-        <li class="action"><a href="/login">Войти</a></li>
+            <li class="action"><a href="/login">Войти</a></li>
         {% endif %}
+        <li><a id="game" style="pointer-events: none">1/3</a></li>
+        <li><a id="scores" style="pointer-events: none;">0</a></li>
     </ul>
 </nav>
 <div id="alert">

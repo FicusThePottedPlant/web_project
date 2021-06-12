@@ -6,6 +6,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <script>
+        function locatorButtonPressed() {
+            console.log(1)
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    document.getElementById("nearby").setAttribute('href', 'session/' + position.coords.latitude + ' ' + position.coords.longitude);
+                },
+                error => {
+                    console.log(error.message);
+                },
+            )
+        }
+    </script>
 </head>
 <body>
 <nav id="navbar">
@@ -28,26 +41,16 @@
         {% endif %}
     </ul>
 </nav>
-{% if user != 'Пользователь не найден' and user != 'Вы не можете пока ничего настроить' %}
-    <div class="profile">
-        <div class="basic">
-            <h1>{{ user.username }}</h1>
-            <p>ID: {{ user.id }}</p>
-        </div>
-        <div class="statistics">
-            <h1>Игровая статистика</h1>
-            <p>Всего очков: <span>{{ user.score }}</span></p>
-            <p>Всего сыграно: <span>{{ user.games_played }}</span></p>
-            <p>Лучший результат: <span>{{ user.max }}</span></p>
-            <p>Средний результат: <span>{{ user.medium }}</span></p>
-        </div>
+<div class="profile">
+    <div class="basic">
+        <h1>Нужен доступ к вашей геолокации</h1>
+        <h3>Или добавьте к адресной строке session/lat lng, где lat и lng ваши координаты</h3>
+        <h4>Например session/54.7001 55.9734</h4>
+        <h5>Или дайте доступ</h5>
+        <button class="start" onclick="locatorButtonPressed()">Дать доступ</button>
     </div>
-{% else %}
-    <div class="profile">
-        <div class="basic">
-            <h1>{{ user }}</h1>
-        </div>
-    </div>
-{% endif %}
+</div>
+
+
 </body>
 </html>
