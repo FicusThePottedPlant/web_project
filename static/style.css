@@ -432,14 +432,12 @@
     grid-gap: 4rem;
     padding: 4rem;
     margin: 30px auto;
-    width: max-content;
 }
 
 .card {
     --bg-filter-opacity: 0.05;
     background-image: linear-gradient(rgba(0, 0, 0, var(--bg-filter-opacity)), rgba(0, 0, 0, var(--bg-filter-opacity))), var(--bg-img);
     height: 15em;
-    width: 15em;
     font-size: 1.5em;
     color: white;
     border-radius: 1em;
