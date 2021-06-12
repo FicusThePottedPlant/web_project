@@ -75,7 +75,7 @@ function handleEvents() {
         pano().style.opacity = 1
         nextGame().onclick = () => {
             // set new level
-            myMap.setZoom(3)
+            myMap.setZoom(coeff == 1000.3 ? 10 : 3)
             ++game
             document.getElementById("game").innerHTML = (game + 1) + '/3'
             // and change behaviour of button next-game
@@ -235,8 +235,8 @@ ymaps.ready(init) // initialize map of js yandex map API
 
 function init() {
     myMap = new ymaps.Map("map", {
-        center: coeff = 1000.3 ? [games[0][0], games[0][1]] : [14.3, 90.5],
-        zoom: coeff = 1000.3 ? 10 : 3,
+        center: coeff == 1000.3 ? [games[0][0], games[0][1]] : [14.3, 90.5],
+        zoom: coeff == 1000.3 ? 10 : 3,
     }, {
         minZoom: 2,
         searchControlProvider: 'yandex#search',

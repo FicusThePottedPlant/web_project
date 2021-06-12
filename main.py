@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify, make_response, redir
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_restful import abort, Api
 from sqlalchemy import exc
-
+import requests
 import rest_api_stuff
 from data import db_session
 from data.user import User
@@ -45,9 +45,9 @@ def get_rnd(play_type):
 
 
 def get_nearby(coords):
-    lat, lng = coords.split()
-    lat, lng = float(lat) + 0.00001 * randint(0, 5) + random() * 0.01, \
-               float(lng) + 0.0001 * randint(0, 5) + random() * 0.01
+    lat, lng = coords
+    lat, lng = float(lat) + 0.001 * randint(0, 5) + random() * 0.01 + random() * 0.01, \
+               float(lng) + 0.0003 * randint(0, 5) + random() * 0.01 + random() * 0.05
     return [round(lat, 7), round(lng, 7)]
 
 
@@ -73,10 +73,11 @@ def login():
 @app.route('/session/<string:pl_type>', methods=['GET', 'POST'])
 def play(pl_type):
     """game page"""
-    score_cs = {'world': 1.3, 'russia': 2}
+    print(pl_type)
+    score_cs = {'world': 1.3, 'russia': 2, 'custom': 1000.3}
     score_c = score_cs.get(pl_type, 1000.3)
-    if pl_type == 'error':
-        return render_template('give_location.html', user='Нужен доступ к вашей геолокации')
+
+    pl_type = user_coords if pl_type == 'custom' else pl_type
     return render_template('3d.html', coordinates=[get_rnd(pl_type), get_rnd(pl_type), get_rnd(pl_type)],
                            score_c=score_c)
 
@@ -152,6 +153,10 @@ def not_found(error):
 
 db_session.global_init("db/web_project.db")
 db_sess = db_session.create_session()
+# getting coordinates by ip
+url = 'http://ip-api.com/json/'
+r = requests.get(url)
+user_coords = r.json()['lat'], r.json()['lon']
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)

@@ -6,19 +6,6 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
-    <script>
-        function locatorButtonPressed() {
-            console.log(1)
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    document.getElementById("nearby").setAttribute('href', 'session/' + position.coords.latitude + ' ' + position.coords.longitude);
-                },
-                error => {
-                    console.log(error.message);
-                },
-            )
-        }
-    </script>
 </head>
 <body>
 <nav id="navbar">
@@ -60,8 +47,8 @@
             </div>
         </a>
     </div>
-    <div class="card-grid-space" onclick='locatorButtonPressed()'>
-        <a class="card" id="nearby" onmouseover='locatorButtonPressed()' href="session/error"
+    <div class="card-grid-space">
+        <a class="card" id="nearby" href="session/custom"
            style="--bg-img: url({{ url_for('static', filename='near.jpg') }})">
             <div>
                 <h1>Поблизости</h1>
