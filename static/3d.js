@@ -67,10 +67,12 @@ function closeNavigation() {
 function handleEvents() {
     setTimeout(() => {
         // delete compass and other elements from panorama
-        let l = pano().children[document.getElementById("pano").children.length - 2].children[0].children[0].children[0]
-        let b = pano().children[document.getElementById("pano").children.length - 1]
-        l.style.display = "none"
-        b.style.display = "none"
+let b = pano().children[document.getElementById("pano").children.length - 1]
+let w = Array.from(pano().querySelectorAll(".gm-style"))
+console.log(w)
+let q = w[w.length-1].children[1].children[0]
+q.children[q.childElementCount - 2].children[0].style.display = "none"
+b.style.display = "none"
         pano().style.height = "110vh"
         pano().style.opacity = 1
         nextGame().onclick = () => {
